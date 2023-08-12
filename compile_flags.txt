@@ -1,0 +1,7 @@
+-W
+-Wall
+-pedantic
+-std=c++20
+-Isrc
+-Ideps/n/dist/n
+
