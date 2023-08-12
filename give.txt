@@ -1,0 +1,4 @@
+- name: n
+  url: https://github.com/bmathieugit/n
+  version: main
+
