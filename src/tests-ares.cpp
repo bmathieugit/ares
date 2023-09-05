@@ -1,7 +1,7 @@
 #include <ares/ares.hpp>
 
-#include <n/io.hpp>
-
+#include <format>
+#include <iostream>
 
 constexpr void printb(unsigned char value) {
   for (int i = sizeof(value) * 8 - 1; i >= 0; --i) {
@@ -10,13 +10,14 @@ constexpr void printb(unsigned char value) {
 }
 
 int main() {
-  n::string<char> input = n::str("Hello World !!");
-  n::string<char> passw = n::str("password");
-  n::string<char> encoded = ares::encode(input.iter(), passw.iter());
+  std::string input = "Hello World !!";
+  std::string passw = "Ceci est un password";
+  auto encoded = ares::encode(input, passw);
 
-  n::printf("input '$' => encoded '$'\n", input, encoded);
+  std::string out;
+  std::format_to(std::back_inserter(out), "input '{}' => encoded '{}'\n", input, encoded);
+  std::string decoded = ares::decode(encoded, passw);
 
-  n::string<char> decoded = ares::decode(encoded.iter(), passw.iter());
-
-  n::printf("encoded '$' => decoded '$'\n", encoded, decoded);
+  std::format_to(std::back_inserter(out), "encoded '{}' => decoded '{}'\n", encoded, decoded);
+  std::cout << out;
 }

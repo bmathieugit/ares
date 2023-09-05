@@ -1,7 +1,10 @@
 #ifndef __ares_ares_hpp__
 #define __ares_ares_hpp__
 
-#include <n/string.hpp>
+// #include <n/string.hpp>
+#include <string>
+#include <string_view>
+#include <algorithm>
 
 namespace ares {
 namespace bit {
@@ -26,19 +29,17 @@ constexpr unsigned char minus(unsigned char c, unsigned char n) {
   return c - n;
 }
 
+constexpr unsigned char mult(unsigned char c, unsigned char n) { return c * n; }
+
+constexpr unsigned char div(unsigned char c, unsigned char n) { return c / n; }
+
 } // namespace bit
 
-constexpr n::string<char> encode(n::iterator auto input,
-                                 n::iterator auto psswd) {
-  n::string<char> output;
+constexpr std::string encode(std::string_view input, std::string_view psswd) {
+  std::string output;
 
-  while (input.has_next()) {
-    auto tmp = psswd;
-
-    while (tmp.has_next() and input.has_next()) {
-      auto c = input.next();
-      auto n = tmp.next();
-
+  for (char c : input) {
+    for (char n : psswd) {
       switch (n % 5) {
       case 0:
         c = bit::rotl(c, n);
@@ -56,25 +57,21 @@ constexpr n::string<char> encode(n::iterator auto input,
         c = bit::minus(c, n);
         break;
       }
-
-      output.push(c);
     }
+
+    output.push_back(c);
   }
 
   return output;
 }
 
-constexpr n::string<char> decode(n::iterator auto input,
-                                 n::iterator auto psswd) {
-  n::string<char> output;
+constexpr std::string decode(std::string_view input, std::string_view psswd) {
+  std::string output;
+  std::string reversed (psswd);
+  std::reverse(reversed.begin(), reversed.end());  
 
-  while (input.has_next()) {
-    auto tmp = psswd;
-
-    while (tmp.has_next() and input.has_next()) {
-      auto c = input.next();
-      auto n = tmp.next();
-
+  for (char c : input) {
+    for (char n : reversed) {
       switch (n % 5) {
       case 0:
         c = bit::rotr(c, n);
@@ -92,9 +89,9 @@ constexpr n::string<char> decode(n::iterator auto input,
         c = bit::add(c, n);
         break;
       }
-
-      output.push(c);
     }
+
+    output.push_back(c);
   }
 
   return output;
