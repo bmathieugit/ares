@@ -14,9 +14,9 @@ int main() {
   n::string<char> passw = n::str("password");
   n::string<char> encoded = ares::encode(input.iter(), passw.iter());
 
-  n::printf("input '$' => encoded '$'", input, encoded);
+  n::printf("input '$' => encoded '$'\n", input, encoded);
 
   n::string<char> decoded = ares::decode(encoded.iter(), passw.iter());
 
-  n::printf("encoded '$' => decoded '$'", encoded, decoded);
+  n::printf("encoded '$' => decoded '$'\n", encoded, decoded);
 }
